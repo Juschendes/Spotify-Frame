@@ -282,8 +282,14 @@
     target.innerHTML = text.substring(0, charIndex + 1) +
       '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
 
-    // ✅ Auto-scroll ONLY while typing (not for extra content)
+    // ✅ Auto-scroll message container during typing
     msg.scrollTop = msg.scrollHeight;
+
+    // ✅ Auto-scroll whole page to follow growing container
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth'
+    });
 
     setTimeout(() => {
       typeLine(lineIndex, charIndex + 1);
@@ -291,9 +297,13 @@
   } else {
     target.textContent = text;
 
-    // ✅ Still scroll after finishing each line (but not after typing ends)
+    // ✅ Scroll once after each full line (except final)
     if (lineIndex < lines.length - 1) {
       msg.scrollTop = msg.scrollHeight;
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
     }
 
     if (lineIndex === lines.length - 1) {
@@ -305,7 +315,7 @@
       }
 
       setTimeout(() => {
-        // 🚫 DO NOT auto-scroll here — we’re done scrolling!
+        // ✅ Extra content appears, but no scroll triggered — as requested
         document.getElementById("extraContent").style.display = "block";
       }, 600);
     }
