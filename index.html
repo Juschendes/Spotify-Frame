@@ -12,7 +12,6 @@
       padding: 0;
       overflow: hidden;
     }
-
     body {
       background: linear-gradient(135deg, #1e1e2f, #3e2f4f);
       font-family: 'Segoe UI', sans-serif;
@@ -20,7 +19,6 @@
       align-items: center;
       justify-content: center;
     }
-
     #cardWrapper {
       width: 100%;
       max-width: 390px;
@@ -30,8 +28,8 @@
       border-radius: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       z-index: 2;
+      position: relative;
     }
-
     .card {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(20px);
@@ -42,12 +40,27 @@
       overflow: hidden;
       border-radius: 1.5rem;
       position: relative;
+      z-index: 2;
     }
-
+    #cardWrapper::before {
+      content: '';
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      left: -10%;
+      top: -10%;
+      background: radial-gradient(circle, rgba(255,192,203,0.15), transparent);
+      border-radius: 2rem;
+      animation: softPulse 4s ease-in-out infinite;
+      z-index: 1;
+    }
+    @keyframes softPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
     .progress-bar {
       transition: width 0.2s ease-in-out;
     }
-
     .sparkle {
       position: absolute;
       width: 8px;
@@ -59,22 +72,17 @@
       pointer-events: none;
       z-index: 10;
     }
-
     @keyframes sparkle-float {
       0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
       100% { transform: translateY(-60px) scale(0.7) rotate(180deg); opacity: 0; }
     }
-
     @keyframes bounce-glow {
       0% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
       30% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
       60% { transform: scale(0.98); box-shadow: 0 0 12px rgba(255,255,255,0.4); }
       100% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
     }
-
-    .bounce-glow {
-      animation: bounce-glow 1.2s ease-in-out 1;
-    }
+    .bounce-glow { animation: bounce-glow 1.2s ease-in-out 1; }
 
     #hiddenMessage {
       display: flex;
@@ -108,17 +116,7 @@
       cursor: pointer;
       transition: color 0.3s ease;
     }
-
     #mysteryBtn:hover { color: white; }
-
-    #hiddenMessage::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    #hiddenMessage::-webkit-scrollbar-thumb {
-      background: #aaa;
-      border-radius: 3px;
-    }
 
     .confetti-heart {
       position: fixed;
@@ -130,7 +128,6 @@
       animation: floatConfetti 6s linear infinite;
       z-index: 0;
     }
-
     .confetti-heart::before,
     .confetti-heart::after {
       content: '';
@@ -140,28 +137,71 @@
       background: pink;
       border-radius: 50%;
     }
-
     .confetti-heart::before { top: -6px; left: 0; }
     .confetti-heart::after  { top: 0; left: -6px; }
 
     @keyframes floatConfetti {
-      0%   { transform: translateY(0) rotate(45deg); opacity: 1; }
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
       100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
     }
 
-    /* ✅ Scroll fix */
+    .fallen-heart {
+      position: fixed;
+      bottom: 10px;
+      width: 14px;
+      height: 14px;
+      background: pink;
+      transform: rotate(45deg) scale(1);
+      opacity: 0;
+      animation: appearAndSettle 0.6s ease-out forwards;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .fallen-heart::before,
+    .fallen-heart::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: pink;
+      border-radius: 50%;
+    }
+    .fallen-heart::before { top: -7px; left: 0; }
+    .fallen-heart::after  { top: 0; left: -7px; }
+
+    @keyframes appearAndSettle {
+      0% { transform: translateY(10px) scale(0.8) rotate(45deg); opacity: 0; }
+      100% { transform: translateY(0) scale(1) rotate(45deg); opacity: 0.8; }
+    }
+
+    .floating-particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: floatUp 15s linear infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.4; }
+      100% { transform: translateY(-100vh) scale(0.8); opacity: 0; }
+    }
+
     body.scroll-enabled, html.scroll-enabled {
       height: auto !important;
       overflow-y: auto !important;
     }
-
     body.scroll-enabled #cardWrapper {
       max-height: none !important;
     }
   </style>
 </head>
 <body class="text-white">
-  <div id="cardWrapper">
+<!-- Body content and script continues below... -->
+<div id="cardWrapper">
     <div class="card z-10">
       <img src="us/1.jpg" alt="Us Together" class="w-full rounded-xl shadow-lg mb-4">
       <div class="text-xl font-semibold">I Like You So Much, You'll Know It</div>
@@ -255,7 +295,6 @@
       msg.style.visibility = "visible";
       msg.style.opacity = "1";
 
-      // ✅ Unlock full page scroll
       document.body.classList.add("scroll-enabled");
       document.documentElement.classList.add("scroll-enabled");
 
@@ -264,65 +303,39 @@
 
       const lines = [
         "You really couldn’t resist, huh? 😄",
-        "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
+        "I just want to say thank you for being you — the one I prayed for.",
         "Happy Monthsary, mahal ko. 💙"
       ];
       const ids = ["line1", "line2", "line3"];
       const speeds = [40, 60, 45];
 
       function typeLine(lineIndex = 0, charIndex = 0) {
-  if (lineIndex >= lines.length) return;
+        if (lineIndex >= lines.length) return;
+        const target = document.getElementById(ids[lineIndex]);
+        const text = lines[lineIndex];
+        const speed = speeds[lineIndex];
 
-  const target = document.getElementById(ids[lineIndex]);
-  const text = lines[lineIndex];
-  const speed = speeds[lineIndex];
-  const msg = document.getElementById("hiddenMessage");
-
-  if (charIndex < text.length) {
-    target.innerHTML = text.substring(0, charIndex + 1) +
-      '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
-
-    // ✅ Auto-scroll message container during typing
-    msg.scrollTop = msg.scrollHeight;
-
-    // ✅ Auto-scroll whole page to follow growing container
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: 'smooth'
-    });
-
-    setTimeout(() => {
-      typeLine(lineIndex, charIndex + 1);
-    }, speed);
-  } else {
-    target.textContent = text;
-
-    // ✅ Scroll once after each full line (except final)
-    if (lineIndex < lines.length - 1) {
-      msg.scrollTop = msg.scrollHeight;
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
-
-    if (lineIndex === lines.length - 1) {
-      msg.classList.add("bounce-glow");
-      sparkleSound.play();
-
-      for (let i = 0; i < 30; i++) {
-        setTimeout(() => createSparkle(msg), i * 25);
+        if (charIndex < text.length) {
+          target.innerHTML = text.substring(0, charIndex + 1) +
+            '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
+          msg.scrollTop = msg.scrollHeight;
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+          setTimeout(() => typeLine(lineIndex, charIndex + 1), speed);
+        } else {
+          target.textContent = text;
+          if (lineIndex === lines.length - 1) {
+            msg.classList.add("bounce-glow");
+            sparkleSound.play();
+            for (let i = 0; i < 30; i++) {
+              setTimeout(() => createSparkle(msg), i * 25);
+            }
+            setTimeout(() => {
+              document.getElementById("extraContent").style.display = "block";
+            }, 600);
+          }
+          setTimeout(() => typeLine(lineIndex + 1, 0), 800);
+        }
       }
-
-      setTimeout(() => {
-        // ✅ Extra content appears, but no scroll triggered — as requested
-        document.getElementById("extraContent").style.display = "block";
-      }, 600);
-    }
-
-    setTimeout(() => typeLine(lineIndex + 1, 0), 800);
-  }
-}
 
       typeLine();
     }
@@ -339,20 +352,46 @@
       setTimeout(() => sparkle.remove(), 2000);
     }
 
+    let petalCount = 0;
+    const maxPetals = 12;
+
     function createConfettiHearts() {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 15; i++) {
         const heart = document.createElement('div');
         heart.className = 'confetti-heart';
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.top = '-' + (Math.random() * 20) + 'vh';
+        heart.style.zIndex = Math.random() < 0.3 ? '11' : '0'; // 30% chance to float in front
         heart.style.animationDelay = Math.random() * 6 + 's';
         document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 8000);
+        setTimeout(() => {
+          heart.remove();
+          if (petalCount < maxPetals) {
+            const fallen = document.createElement('div');
+            fallen.className = 'fallen-heart';
+            fallen.style.left = (5 + Math.random() * 90) + 'vw';
+            fallen.style.bottom = (5 + Math.random() * 10) + 'px';
+            document.body.appendChild(fallen);
+            petalCount++;
+          }
+        }, 8000);
+      }
+    }
+
+    function createFloatingParticles() {
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement("div");
+        particle.className = "floating-particle";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 15000);
       }
     }
 
     createConfettiHearts();
     setInterval(createConfettiHearts, 6000);
+    setInterval(createFloatingParticles, 7000);
   </script>
 </body>
 </html>
