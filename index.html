@@ -149,14 +149,10 @@
       100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
     }
 
-    /* ✅ ADDED: Unlock scrolling after button click */
-    body.scroll-enabled {
+    /* ✅ Scroll fix */
+    body.scroll-enabled, html.scroll-enabled {
       height: auto !important;
       overflow-y: auto !important;
-    }
-
-    body.scroll-enabled::-webkit-scrollbar {
-      display: none;
     }
 
     body.scroll-enabled #cardWrapper {
@@ -259,7 +255,9 @@
       msg.style.visibility = "visible";
       msg.style.opacity = "1";
 
-      document.body.classList.add("scroll-enabled"); // ✅ unlock scroll on click
+      // ✅ Unlock full page scroll
+      document.body.classList.add("scroll-enabled");
+      document.documentElement.classList.add("scroll-enabled");
 
       revealSound.play();
       setTimeout(() => msg.scrollIntoView({ behavior: "smooth", block: "end" }), 300);
@@ -284,7 +282,6 @@
           msg.scrollTop = msg.scrollHeight;
           setTimeout(() => {
             typeLine(lineIndex, charIndex + 1);
-            autoExpandWrapper();
           }, speed);
         } else {
           target.textContent = text;
@@ -305,11 +302,6 @@
       }
 
       typeLine();
-    }
-
-    function autoExpandWrapper() {
-      const scrollH = document.querySelector('.card').scrollHeight;
-      cardWrapper.style.maxHeight = Math.min(window.innerHeight, scrollH + 30) + "px";
     }
 
     function createSparkle(container) {
