@@ -282,18 +282,6 @@
     target.innerHTML = text.substring(0, charIndex + 1) +
       '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
 
-    // ✅ Scroll inside the message container
-    msg.scrollTo({
-      top: msg.scrollHeight,
-      behavior: 'smooth'
-    });
-
-    // ✅ Scroll the whole page too
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: 'smooth'
-    });
-
     setTimeout(() => {
       typeLine(lineIndex, charIndex + 1);
     }, speed);
@@ -303,13 +291,28 @@
     if (lineIndex === lines.length - 1) {
       msg.classList.add("bounce-glow");
       sparkleSound.play();
+
+      // ✅ Only scroll both containers AFTER final line finishes typing
+      setTimeout(() => {
+        msg.scrollTo({
+          top: msg.scrollHeight,
+          behavior: 'smooth'
+        });
+
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 200);
+
       for (let i = 0; i < 30; i++) {
         setTimeout(() => createSparkle(msg), i * 25);
       }
+
       setTimeout(() => {
         document.getElementById("extraContent").style.display = "block";
 
-        // ✅ Final scroll after everything is revealed
+        // Scroll again after extra content if needed
         setTimeout(() => {
           msg.scrollTo({
             top: msg.scrollHeight,
@@ -327,7 +330,6 @@
     setTimeout(() => typeLine(lineIndex + 1, 0), 800);
   }
 }
-
 
       typeLine();
     }
