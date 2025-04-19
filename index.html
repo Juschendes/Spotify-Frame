@@ -107,17 +107,28 @@
     }
 
     #mysteryBtn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin: 0 auto;
-      margin-top: 12px;
-      color: #ccc;
+      margin-top: 1rem; /* Added margin-top */
       background: none;
       border: none;
-      font-size: 0.9rem;
       cursor: pointer;
-      transition: color 0.3s ease;
+      transition: transform 0.3s ease, color 0.3s ease;
+      color: #ff6b6b; /* Pink heart */
+      font-size: 1.5rem; /* Heart size */
+      animation: pulse-heart 1.5s ease-in-out infinite;
     }
-    #mysteryBtn:hover { color: white; }
+    #mysteryBtn:hover {
+      color: #ff8787;
+      transform: scale(1.2);
+    }
+    @keyframes pulse-heart {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
 
     .confetti-heart {
       position: fixed;
@@ -191,6 +202,33 @@
       100% { transform: translateY(-100vh) scale(0.8); opacity: 0; }
     }
 
+    .heart-burst {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff6b6b;
+      transform: rotate(45deg);
+      opacity: 0.9;
+      animation: heart-burst 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .heart-burst::before,
+    .heart-burst::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff6b6b;
+      border-radius: 50%;
+    }
+    .heart-burst::before { top: -8px; left: 0; }
+    .heart-burst::after { top: 0; left: -8px; }
+    @keyframes heart-burst {
+      0% { transform: translate(0, 0) rotate(45deg) scale(1); opacity: 0.9; }
+      100% { transform: translate(var(--x), var(--y)) rotate(45deg) scale(0.5); opacity: 0; }
+    }
+
     body.scroll-enabled, html.scroll-enabled {
       height: auto !important;
       overflow-y: auto !important;
@@ -249,7 +287,7 @@
         </div>
       </div>
 
-      <audio id="bg-music" src="Like.mp3"></audio>
+      <audio id="bg-music" src="music/Like.mp3"></audio>
       <audio id="reveal-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_545f40c619.mp3"></audio>
       <audio id="sparkle-sound" src="https://cdn.pixabay.com/audio/2023/03/21/audio_2d8b3d536b.mp3"></audio>
 
@@ -275,7 +313,9 @@
         </button>
       </div>
 
-      <button id="mysteryBtn" onclick="revealSurprise()">Do not click ❌</button>
+      <button id="mysteryBtn" onclick="revealSurprise()">
+        <i class="bi bi-heart-fill"></i>
+      </button>
 
       <div id="hiddenMessage">
         <span id="line1" class="block"></span>
@@ -322,19 +362,19 @@
       {
         title: "I Like You So Much, You'll Know It",
         artist: "Ysabelle Cuevas",
-        src: "Like.mp3",
+        src: "music/Like.mp3",
         image: "us/1.jpg"
       },
       {
         title: "You'll Be In My Heart",
         artist: "NIKI",
-        src: "myheart.mp3",
+        src: "music/myheart.mp3",
         image: "us/2.jpg"
       },
       {
         title: "Spring Snow",
         artist: "10cm",
-        src: "Spring.mp3",
+        src: "music/Spring.mp3",
         image: "us/3.jpg"
       }
     ];
@@ -455,7 +495,8 @@
     });
 
     function revealSurprise() {
-      document.getElementById("mysteryBtn").style.display = "none";
+      const mysteryBtn = document.getElementById("mysteryBtn");
+      mysteryBtn.style.display = "none";
       const msg = document.getElementById("hiddenMessage");
       msg.style.visibility = "visible";
       msg.style.opacity = "1";
@@ -463,46 +504,73 @@
       document.body.classList.add("scroll-enabled");
       document.documentElement.classList.add("scroll-enabled");
 
-      revealSound.play();
-      setTimeout(() => msg.scrollIntoView({ behavior: "smooth", block: "end" }), 300);
-
-      const lines = [
-        "You really couldn’t resist, huh? 😄",
-        "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
-        "Happy Monthsary, mahal ko. 💙"
-      ];
-      const ids = ["line1", "line2", "line3"];
-      const speeds = [40, 60, 45];
-
-      function typeLine(lineIndex = 0, charIndex = 0) {
-        if (lineIndex >= lines.length) return;
-        const target = document.getElementById(ids[lineIndex]);
-        const text = lines[lineIndex];
-        const speed = speeds[lineIndex];
-
-        if (charIndex < text.length) {
-          target.innerHTML = text.substring(0, charIndex + 1) +
-            '<span class="border-r border-gray-300 animate-pulse ml-0.5"> </span>';
-          msg.scrollTop = msg.scrollHeight;
-          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-          setTimeout(() => typeLine(lineIndex, charIndex + 1), speed);
-        } else {
-          target.textContent = text;
-          if (lineIndex === lines.length - 1) {
-            msg.classList.add("bounce-glow");
-            sparkleSound.play();
-            for (let i = 0; i < 30; i++) {
-              setTimeout(() => createSparkle(msg), i * 25);
-            }
-            setTimeout(() => {
-              document.getElementById("extraContent").style.display = "block";
-            }, 600);
-          }
-          setTimeout(() => typeLine(lineIndex + 1, 0), 800);
+      // Surprise effect: Heart burst and sparkles
+      function createHeartBurst() {
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement("div");
+          heart.className = "heart-burst";
+          const x = (Math.random() - 0.5) * 200;
+          const y = (Math.random() - 0.5) * 200;
+          heart.style.setProperty("--x", `${x}px`);
+          heart.style.setProperty("--y", `${y}px`);
+          heart.style.left = `50%`;
+          heart.style.top = `50%`;
+          cardWrapper.appendChild(heart);
+          setTimeout(() => heart.remove(), 1000);
         }
       }
 
-      typeLine();
+      function createSurpriseSparkles() {
+        for (let i = 0; i < 15; i++) {
+          setTimeout(() => createSparkle(cardWrapper), i * 50);
+        }
+      }
+
+      revealSound.play();
+      createHeartBurst();
+      createSurpriseSparkles();
+
+      // Start typing after the surprise effect
+      setTimeout(() => {
+        msg.scrollIntoView({ behavior: "smooth", block: "end" });
+        const lines = [
+          "You really couldn’t resist, huh? 😄",
+          "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
+          "Happy Monthsary, mahal ko. 💙"
+        ];
+        const ids = ["line1", "line2", "line3"];
+        const speeds = [40, 60, 45];
+
+        function typeLine(lineIndex = 0, charIndex = 0) {
+          if (lineIndex >= lines.length) return;
+          const target = document.getElementById(ids[lineIndex]);
+          const text = lines[lineIndex];
+          const speed = speeds[lineIndex];
+
+          if (charIndex < text.length) {
+            target.innerHTML = text.substring(0, charIndex + 1) +
+              '<span class="border-r border-gray-300 animate-pulse ml-0.5"> </span>';
+            msg.scrollTop = msg.scrollHeight;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            setTimeout(() => typeLine(lineIndex, charIndex + 1), speed);
+          } else {
+            target.textContent = text;
+            if (lineIndex === lines.length - 1) {
+              msg.classList.add("bounce-glow");
+              sparkleSound.play();
+              for (let i = 0; i < 30; i++) {
+                setTimeout(() => createSparkle(msg), i * 25);
+              }
+              setTimeout(() => {
+                document.getElementById("extraContent").style.display = "block";
+              }, 600);
+            }
+            setTimeout(() => typeLine(lineIndex + 1, 0), 800);
+          }
+        }
+
+        typeLine();
+      }, 1000); // Delay typing until after the surprise effect
     }
 
     function createSparkle(container) {
@@ -547,7 +615,7 @@
       for (let i = 0; i < 15; i++) {
         const particle = document.createElement("div");
         particle.className = "floating-particle";
-        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.left = Math.random() * 90 + "vw";
         particle.style.top = Math.random() * 100 + "vh";
         document.body.appendChild(particle);
         setTimeout(() => particle.remove(), 15000);
