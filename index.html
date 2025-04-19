@@ -11,6 +11,8 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
         }
 
         body {
@@ -19,14 +21,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow-y: auto;
+        scrollbar-width: none;
         }
+        body::-webkit-scrollbar {
+  display: none;
+}
+
+body::after {
+  content: '';
+  display: block;
+  height: 15vh; /* Add extra space to allow scrolling */
+}
 
         #cardWrapper {
         width: 100%;
         max-width: 390px;
         overflow: hidden;
         transition: max-height 0.6s ease;
-        max-height: 80vh;
+        max-height: 75vh;
         border-radius: 1.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         z-index: 2;
