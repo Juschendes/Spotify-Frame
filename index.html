@@ -111,13 +111,13 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto;
-      margin-top: 1rem; /* Added margin-top */
+      margin-top: 1rem;
       background: none;
       border: none;
       cursor: pointer;
       transition: transform 0.3s ease, color 0.3s ease;
-      color: #ff6b6b; /* Pink heart */
-      font-size: 1.5rem; /* Heart size */
+      color: #ff6b6b;
+      font-size: 1.5rem;
       animation: pulse-heart 1.5s ease-in-out infinite;
     }
     #mysteryBtn:hover {
@@ -237,7 +237,6 @@
       max-height: none !important;
     }
 
-    /* Enhanced Slide Animation Styles */
     #songDetails {
       position: relative;
       overflow: hidden;
@@ -321,6 +320,19 @@
         <span id="line1" class="block"></span>
         <span id="line2" class="block mt-1"></span>
         <span id="line3" class="block mt-1"></span>
+        <span id="line4" class="block mt-1"></span>
+        <span id="line5" class="block mt-1"></span>
+        <span id="line6" class="block mt-1"></span>
+        <span id="line7" class="block mt-1"></span>
+        <span id="line8" class="block mt-1"></span>
+        <span id="line9" class="block mt-1"></span>
+        <span id="line10" class="block mt-1"></span>
+        <span id="line11" class="block mt-1"></span>
+        <span id="line12" class="block mt-1"></span>
+        <span id="line13" class="block mt-1"></span>
+        <span id="line14" class="block mt-1"></span>
+        <span id="line15" class="block mt-1"></span>
+        <span id="line16" class="block mt-1"></span>
 
         <div id="extraContent" style="display: none;">
           <div class="mt-4 text-right text-sm text-white italic" style="font-family: 'Brush Script MT', cursive;">
@@ -335,7 +347,7 @@
           </div>
 
           <div class="mt-6 text-center text-sm text-pink-200 italic">
-            “A month of love, a month of laughter, a month of you and me — and this is just the beginning. Happy first monthsary, mi sol.”
+            “A month of love, a month of laughter, a month of you and me — and this is just the beginning. Happy first monthsary, Mi Sol.”
           </div>
         </div>
       </div>
@@ -504,7 +516,6 @@
       document.body.classList.add("scroll-enabled");
       document.documentElement.classList.add("scroll-enabled");
 
-      // Surprise effect: Heart burst and sparkles
       function createHeartBurst() {
         for (let i = 0; i < 20; i++) {
           const heart = document.createElement("div");
@@ -530,16 +541,28 @@
       createHeartBurst();
       createSurpriseSparkles();
 
-      // Start typing after the surprise effect
       setTimeout(() => {
         msg.scrollIntoView({ behavior: "smooth", block: "end" });
         const lines = [
-          "You really couldn’t resist, huh? 😄",
-          "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
-          "Happy Monthsary, mahal ko. 💙"
+          'You clicked the heart... just like you stole mine. 💘',
+          '',
+          'Happy 1st Monthsary, <span class="text-pink-300 font-bold">Babe</span>!',
+          '',
+          'Ang bilis lang—parang kahapon lang nung nag-match tayo sa Tinder, tapos ngayon, ikaw na ‘yung nagpapasaya sa’kin araw-araw.',
+          'Di ko pa rin makalimutan yung araw na sinagot mo ako sa Sawangan.',
+          'Ang hangin, yung dagat, OPM love songs, tapos ikaw pa ‘yung katabi ko… sarap sa feeling, <span class="text-pink-300 font-bold">Hon</span>.',
+          'Kaya kahit ilang beses ko sinabing “labelan na natin ‘to” in a playful way, deep inside seryoso ako nun.',
+          'And when you finally agreed—best feeling ever.',
+          'Hindi rin mawawala sa isip ko yung duet natin kahit alam kong pangit boses ko. Pero dahil ikaw ‘yung kasama ko, na-enjoy ko pa rin.',
+          '<span class="text-pink-300 font-bold">Love</span>, ang ganda ng boses mo—wag kang mahiya.',
+          'I’ll never get tired of hearing it… and of choosing you.',
+          '<span class="text-pink-300 font-bold">Mahal</span>, thank you for being my pahinga, my happiness, my favorite person.',
+          'Here’s to more months, more songs, more memories.',
+          'Pipiliin pa rin kita, araw-araw.',
+          'Love you always, <span class="text-pink-300 font-bold">Baby</span>. 🤍'
         ];
-        const ids = ["line1", "line2", "line3"];
-        const speeds = [40, 60, 45];
+        const ids = ["line1", "line2", "line3", "line4", "line5", "line6", "line7", "line8", "line9", "line10", "line11", "line12", "line13", "line14", "line15", "line16"];
+        const speeds = [40, 10, 40, 10, 60, 50, 60, 60, 40, 60, 50, 50, 50, 40, 40, 40];
 
         function typeLine(lineIndex = 0, charIndex = 0) {
           if (lineIndex >= lines.length) return;
@@ -548,13 +571,15 @@
           const speed = speeds[lineIndex];
 
           if (charIndex < text.length) {
-            target.innerHTML = text.substring(0, charIndex + 1) +
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = text.substring(0, charIndex + 1);
+            target.innerHTML = tempDiv.innerHTML +
               '<span class="border-r border-gray-300 animate-pulse ml-0.5"> </span>';
             msg.scrollTop = msg.scrollHeight;
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             setTimeout(() => typeLine(lineIndex, charIndex + 1), speed);
           } else {
-            target.textContent = text;
+            target.innerHTML = text;
             if (lineIndex === lines.length - 1) {
               msg.classList.add("bounce-glow");
               sparkleSound.play();
@@ -570,7 +595,7 @@
         }
 
         typeLine();
-      }, 1000); // Delay typing until after the surprise effect
+      }, 1000);
     }
 
     function createSparkle(container) {
