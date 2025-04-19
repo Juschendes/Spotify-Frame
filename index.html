@@ -264,7 +264,7 @@
 
       const lines = [
         "You really couldn’t resist, huh? 😄",
-        "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
+        "I just want to say thank you for being you — the one I prayed for.",
         "Happy Monthsary, mahal ko. 💙"
       ];
       const ids = ["line1", "line2", "line3"];
@@ -272,15 +272,23 @@
 
       function typeLine(lineIndex = 0, charIndex = 0) {
   if (lineIndex >= lines.length) return;
+
   const target = document.getElementById(ids[lineIndex]);
   const text = lines[lineIndex];
   const speed = speeds[lineIndex];
+  const msg = document.getElementById("hiddenMessage");
 
   if (charIndex < text.length) {
     target.innerHTML = text.substring(0, charIndex + 1) +
       '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
 
-    // ✅ Auto-scroll the whole page down as new text is typed
+    // ✅ Scroll inside the message container
+    msg.scrollTo({
+      top: msg.scrollHeight,
+      behavior: 'smooth'
+    });
+
+    // ✅ Scroll the whole page too
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: 'smooth'
@@ -301,8 +309,13 @@
       setTimeout(() => {
         document.getElementById("extraContent").style.display = "block";
 
-        // ✅ Scroll again after extra content appears
+        // ✅ Final scroll after everything is revealed
         setTimeout(() => {
+          msg.scrollTo({
+            top: msg.scrollHeight,
+            behavior: 'smooth'
+          });
+
           window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth'
@@ -314,6 +327,7 @@
     setTimeout(() => typeLine(lineIndex + 1, 0), 800);
   }
 }
+
 
       typeLine();
     }
