@@ -271,35 +271,49 @@
       const speeds = [40, 60, 45];
 
       function typeLine(lineIndex = 0, charIndex = 0) {
-        if (lineIndex >= lines.length) return;
-        const target = document.getElementById(ids[lineIndex]);
-        const text = lines[lineIndex];
-        const speed = speeds[lineIndex];
+  if (lineIndex >= lines.length) return;
+  const target = document.getElementById(ids[lineIndex]);
+  const text = lines[lineIndex];
+  const speed = speeds[lineIndex];
 
-        if (charIndex < text.length) {
-          target.innerHTML = text.substring(0, charIndex + 1) +
-            '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
-          msg.scrollTop = msg.scrollHeight;
-          setTimeout(() => {
-            typeLine(lineIndex, charIndex + 1);
-          }, speed);
-        } else {
-          target.textContent = text;
+  if (charIndex < text.length) {
+    target.innerHTML = text.substring(0, charIndex + 1) +
+      '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
 
-          if (lineIndex === lines.length - 1) {
-            msg.classList.add("bounce-glow");
-            sparkleSound.play();
-            for (let i = 0; i < 30; i++) {
-              setTimeout(() => createSparkle(msg), i * 25);
-            }
-            setTimeout(() => {
-              document.getElementById("extraContent").style.display = "block";
-            }, 600);
-          }
+    // ✅ Auto-scroll the whole page down as new text is typed
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth'
+    });
 
-          setTimeout(() => typeLine(lineIndex + 1, 0), 800);
-        }
+    setTimeout(() => {
+      typeLine(lineIndex, charIndex + 1);
+    }, speed);
+  } else {
+    target.textContent = text;
+
+    if (lineIndex === lines.length - 1) {
+      msg.classList.add("bounce-glow");
+      sparkleSound.play();
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => createSparkle(msg), i * 25);
       }
+      setTimeout(() => {
+        document.getElementById("extraContent").style.display = "block";
+
+        // ✅ Scroll again after extra content appears
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 500);
+      }, 600);
+    }
+
+    setTimeout(() => typeLine(lineIndex + 1, 0), 800);
+  }
+}
 
       typeLine();
     }
