@@ -1,338 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spotify Frame – Our Moment</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spotify Frame – Our Moment</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
     html, body {
-      height: 100vh;
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
     }
 
     body {
-      background: linear-gradient(135deg, #1e1e2f, #3e2f4f);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    background: linear-gradient(135deg, #1e1e2f, #3e2f4f);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     }
 
-    body.scroll-unlocked {
-      height: auto;
-      min-height: 100vh;
-      overflow-y: auto;
-      scrollbar-width: none;
+    body.scroll-enabled {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: auto !important;
+    scrollbar-width: none;
     }
 
-    body.scroll-unlocked::-webkit-scrollbar {
-      display: none;
+    body.scroll-enabled::-webkit-scrollbar {
+    display: none;
     }
 
     #cardWrapper {
-      width: 100%;
-      max-width: 390px;
-      overflow: hidden;
-      transition: max-height 0.6s ease;
-      max-height: 80vh;
-      border-radius: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-
-    body.scroll-unlocked #cardWrapper {
-      max-height: none;
+    width: 100%;
+    max-width: 390px;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+    max-height: 80vh;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 2;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(20px);
-      height: 100%;
-      width: 100%;
-      padding: 1.5rem;
-      box-sizing: border-box;
-      overflow: hidden;
-      border-radius: 1.5rem;
-      position: relative;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    height: 100%;
+    width: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    position: relative;
     }
 
     .progress-bar {
-      transition: width 0.2s ease-in-out;
+    transition: width 0.2s ease-in-out;
     }
 
     .sparkle {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.9;
-      animation: sparkle-float 1.2s ease-out forwards;
-      pointer-events: none;
-      z-index: 10;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.9;
+    animation: sparkle-float 1.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 10;
     }
 
     @keyframes sparkle-float {
-      0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-60px) scale(0.7) rotate(180deg); opacity: 0; }
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-60px) scale(0.7) rotate(180deg); opacity: 0; }
     }
 
     @keyframes bounce-glow {
-      0% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
-      30% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
-      60% { transform: scale(0.98); box-shadow: 0 0 12px rgba(255,255,255,0.4); }
-      100% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
+    0% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
+    30% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
+    60% { transform: scale(0.98); box-shadow: 0 0 12px rgba(255,255,255,0.4); }
+    100% { transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0.2); }
     }
 
     .bounce-glow {
-      animation: bounce-glow 1.2s ease-in-out 1;
+    animation: bounce-glow 1.2s ease-in-out 1;
     }
 
     #hiddenMessage {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      padding-bottom: 2.5rem;
-      background-color: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-      overflow-y: auto;
-      max-height: 35vh;
-      position: relative;
-      box-sizing: border-box;
-      scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    padding-bottom: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    overflow-y: auto;
+    max-height: 25vh;
+    position: relative;
+    box-sizing: border-box;
     }
 
     #hiddenMessage::-webkit-scrollbar {
-      display: none;
+    width: 6px;
+    }
+
+    #hiddenMessage::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 3px;
     }
 
     #mysteryBtn {
-      display: block;
-      margin: 0 auto;
-      margin-top: 12px;
-      color: #ccc;
-      background: none;
-      border: none;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    margin-top: 12px;
+    color: #ccc;
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
     }
 
     #mysteryBtn:hover { color: white; }
 
     .confetti-heart {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      background: pink;
-      transform: rotate(45deg);
-      opacity: 0.8;
-      animation: floatConfetti 6s linear infinite;
-      z-index: 0;
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: pink;
+    transform: rotate(45deg);
+    opacity: 0.8;
+    animation: floatConfetti 6s linear infinite;
+    z-index: 0;
     }
 
     .confetti-heart::before,
     .confetti-heart::after {
-      content: '';
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: pink;
-      border-radius: 50%;
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: pink;
+    border-radius: 50%;
     }
 
     .confetti-heart::before { top: -6px; left: 0; }
     .confetti-heart::after  { top: 0; left: -6px; }
 
     @keyframes floatConfetti {
-      0%   { transform: translateY(0) rotate(45deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+    0%   { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
     }
-  </style>
+</style>
 </head>
 <body class="text-white">
-  <div id="cardWrapper">
-    <div class="card z-10">
-      <img src="us/1.jpg" alt="Us Together" class="w-full rounded-xl shadow-lg mb-4">
-      <div class="text-xl font-semibold">I Like You So Much, You'll Know It</div>
-      <div class="text-sm text-gray-300 mb-3">Ysabelle Cuevas</div>
-      <div class="mb-4">
-        <img src="https://scannables.scdn.co/uri/plain/jpeg/000000/white/640/spotify:track:2t8yVaLvJ0RenpXUIAC52d"
-             alt="Spotify Code" class="mx-auto w-4/5 rounded-md">
-      </div>
+<div id="cardWrapper">
+  <div class="card z-10">
+    <img src="us/1.jpg" alt="Us Together" class="w-full rounded-xl shadow-lg mb-4">
+    <div class="text-xl font-semibold">I Like You So Much, You'll Know It</div>
+    <div class="text-sm text-gray-300 mb-3">Ysabelle Cuevas</div>
+    <div class="mb-4">
+      <img src="https://scannables.scdn.co/uri/plain/jpeg/000000/white/640/spotify:track:2t8yVaLvJ0RenpXUIAC52d"
+           alt="Spotify Code" class="mx-auto w-4/5 rounded-md">
+    </div>
 
-      <audio id="bg-music" src="background.mp3" loop></audio>
-      <audio id="reveal-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_545f40c619.mp3"></audio>
-      <audio id="sparkle-sound" src="https://cdn.pixabay.com/audio/2023/03/21/audio_2d8b3d536b.mp3"></audio>
+    <audio id="bg-music" src="background.mp3" loop></audio>
+    <audio id="reveal-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_545f40c619.mp3"></audio>
+    <audio id="sparkle-sound" src="https://cdn.pixabay.com/audio/2023/03/21/audio_2d8b3d536b.mp3"></audio>
 
-      <button id="playBtn" onclick="togglePlay()" class="bg-green-500 hover:bg-green-600 w-full py-2 rounded-full font-medium text-sm mb-3">Play</button>
+    <button id="playBtn" onclick="togglePlay()" class="bg-green-500 hover:bg-green-600 w-full py-2 rounded-full font-medium text-sm mb-3">Play</button>
 
-      <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-1">
-        <div id="progress" class="bg-green-400 h-full w-0 progress-bar"></div>
-      </div>
+    <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-1">
+      <div id="progress" class="bg-green-400 h-full w-0 progress-bar"></div>
+    </div>
 
-      <div class="flex justify-between text-xs text-gray-400 mb-2">
-        <span id="currentTime">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
+    <div class="flex justify-between text-xs text-gray-400 mb-2">
+      <span id="currentTime">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
 
-      <button id="mysteryBtn" onclick="revealSurprise()">Do not click ❌</button>
+    <button id="mysteryBtn" onclick="revealSurprise()">Do not click ❌</button>
 
-      <div id="hiddenMessage">
-        <span id="line1" class="block"></span>
-        <span id="line2" class="block mt-1"></span>
-        <span id="line3" class="block mt-1"></span>
+    <div id="hiddenMessage">
+      <span id="line1" class="block"></span>
+      <span id="line2" class="block mt-1"></span>
+      <span id="line3" class="block mt-1"></span>
 
-        <div id="extraContent" style="display: none;">
-          <div class="mt-4 text-right text-sm text-white italic" style="font-family: 'Brush Script MT', cursive;">
-            — Yours always, Isaac 💙
+      <div id="extraContent" style="display: none;">
+        <div class="mt-4 text-right text-sm text-white italic" style="font-family: 'Brush Script MT', cursive;">
+          — Yours always, Isaac 💙
+        </div>
+
+        <div class="mt-6 flex justify-center">
+          <div class="bg-white p-2 rounded-lg shadow-lg text-center w-40">
+            <img src="us/first.jpg" class="w-full h-40 object-cover rounded-sm border border-gray-300" alt="Mini Polaroid">
+            <div class="mt-1 text-xs text-gray-700 italic">Our first monthsary ✨</div>
           </div>
+        </div>
 
-          <div class="mt-6 flex justify-center">
-            <div class="bg-white p-2 rounded-lg shadow-lg text-center w-40">
-              <img src="us/first.jpg" class="w-full h-40 object-cover rounded-sm border border-gray-300" alt="Mini Polaroid">
-              <div class="mt-1 text-xs text-gray-700 italic">Our first monthsary ✨</div>
-            </div>
-          </div>
-
-          <div class="mt-6 text-center text-sm text-pink-200 italic">
-            “A month of love, a month of laughter, a month of you and me — and this is just the beginning. Happy first monthsary, mi sol.”
-          </div>
+        <div class="mt-6 text-center text-sm text-pink-200 italic">
+          “A month of love, a month of laughter, a month of you and me — and this is just the beginning. Happy first monthsary, mi sol.”
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    const audio = document.getElementById("bg-music");
-    const playBtn = document.getElementById("playBtn");
-    const progress = document.getElementById("progress");
-    const currentTimeEl = document.getElementById("currentTime");
-    const durationEl = document.getElementById("duration");
-    const revealSound = document.getElementById("reveal-sound");
-    const sparkleSound = document.getElementById("sparkle-sound");
-    const cardWrapper = document.getElementById("cardWrapper");
+<script>
+const audio = document.getElementById("bg-music");
+const playBtn = document.getElementById("playBtn");
+const progress = document.getElementById("progress");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+const revealSound = document.getElementById("reveal-sound");
+const sparkleSound = document.getElementById("sparkle-sound");
+const cardWrapper = document.getElementById("cardWrapper");
 
-    function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerText = "Pause";
-      } else {
-        audio.pause();
-        playBtn.innerText = "Play";
-      }
-    }
+function togglePlay() {
+  if (audio.paused) {
+    audio.play();
+    playBtn.innerText = "Pause";
+  } else {
+    audio.pause();
+    playBtn.innerText = "Play";
+  }
+}
 
-    function formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
-      return `${minutes}:${seconds}`;
-    }
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+  return `${minutes}:${seconds}`;
+}
 
-    audio.addEventListener("loadedmetadata", () => {
-      durationEl.textContent = formatTime(audio.duration);
-    });
+audio.addEventListener("loadedmetadata", () => {
+  durationEl.textContent = formatTime(audio.duration);
+});
 
-    audio.addEventListener("timeupdate", () => {
-      const percent = (audio.currentTime / audio.duration) * 100;
-      progress.style.width = percent + "%";
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-    });
+audio.addEventListener("timeupdate", () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progress.style.width = percent + "%";
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
 
-    function revealSurprise() {
-      document.getElementById("mysteryBtn").style.display = "none";
-      const msg = document.getElementById("hiddenMessage");
-      msg.style.visibility = "visible";
-      msg.style.opacity = "1";
-      document.body.classList.add("scroll-unlocked"); // Enable page scroll
-      revealSound.play();
-      setTimeout(() => msg.scrollIntoView({ behavior: "smooth", block: "end" }), 300);
+function revealSurprise() {
+  document.getElementById("mysteryBtn").style.display = "none";
+  const msg = document.getElementById("hiddenMessage");
+  msg.style.visibility = "visible";
+  msg.style.opacity = "1";
+  document.body.classList.add("scroll-enabled");
+  revealSound.play();
+  setTimeout(() => msg.scrollIntoView({ behavior: "smooth", block: "end" }), 300);
 
-      const lines = [
-        "You really couldn’t resist, huh? 😄",
-        "I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.I just want to say thank you for being you — the one I prayed for.",
-        "Happy Monthsary, mahal ko. 💙"
-      ];
-      const ids = ["line1", "line2", "line3"];
-      const speeds = [40, 60, 45];
+  const lines = [
+    "You really couldn’t resist, huh? 😄",
+    "I just want to say thank you for being you — the one I prayed for.",
+    "Happy Monthsary, mahal ko. 💙"
+  ];
+  const ids = ["line1", "line2", "line3"];
+  const speeds = [40, 60, 45];
 
-      function typeLine(lineIndex = 0, charIndex = 0) {
-        if (lineIndex >= lines.length) return;
-        const target = document.getElementById(ids[lineIndex]);
-        const text = lines[lineIndex];
-        const speed = speeds[lineIndex];
+  function typeLine(lineIndex = 0, charIndex = 0) {
+    if (lineIndex >= lines.length) return;
+    const target = document.getElementById(ids[lineIndex]);
+    const text = lines[lineIndex];
+    const speed = speeds[lineIndex];
 
-        if (charIndex < text.length) {
-          target.innerHTML = text.substring(0, charIndex + 1) +
-            '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
-          msg.scrollTop = msg.scrollHeight;
-          setTimeout(() => {
-            typeLine(lineIndex, charIndex + 1);
-            autoExpandWrapper();
-          }, speed);
-        } else {
-          target.textContent = text;
+    if (charIndex < text.length) {
+      target.innerHTML = text.substring(0, charIndex + 1) +
+        '<span class="border-r border-gray-300 animate-pulse ml-0.5">&nbsp;</span>';
+      msg.scrollTop = msg.scrollHeight;
+      setTimeout(() => {
+        typeLine(lineIndex, charIndex + 1);
+        autoExpandWrapper();
+      }, speed);
+    } else {
+      target.textContent = text;
 
-          if (lineIndex === lines.length - 1) {
-            msg.classList.add("bounce-glow");
-            sparkleSound.play();
-            for (let i = 0; i < 30; i++) {
-              setTimeout(() => createSparkle(msg), i * 25);
-            }
-            setTimeout(() => {
-              document.getElementById("extraContent").style.display = "block";
-            }, 600);
-          }
-
-          setTimeout(() => typeLine(lineIndex + 1, 0), 800);
+      if (lineIndex === lines.length - 1) {
+        msg.classList.add("bounce-glow");
+        sparkleSound.play();
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => createSparkle(msg), i * 25);
         }
+        setTimeout(() => {
+          document.getElementById("extraContent").style.display = "block";
+        }, 600);
       }
 
-      function autoExpandWrapper() {
-        const scrollH = document.querySelector('.card').scrollHeight;
-        cardWrapper.style.maxHeight = Math.min(window.innerHeight, scrollH + 30) + "px";
-      }
-
-      function createSparkle(container) {
-        const sparkle = document.createElement("div");
-        sparkle.className = "sparkle";
-        sparkle.style.left = Math.random() * 90 + "%";
-        sparkle.style.top = Math.random() * 30 + 60 + "%";
-        sparkle.style.background = ["#fff", "#ffd700", "#add8e6", "#f9c6f9"][Math.floor(Math.random() * 4)];
-        sparkle.style.width = sparkle.style.height = (6 + Math.random() * 6) + "px";
-        sparkle.style.animationDuration = (1.2 + Math.random()).toFixed(2) + "s";
-        container.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 2000);
-      }
-
-      typeLine();
+      setTimeout(() => typeLine(lineIndex + 1, 0), 800);
     }
+  }
 
-    function createConfettiHearts() {
-      for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'confetti-heart';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.top = '-' + (Math.random() * 20) + 'vh';
-        heart.style.animationDelay = Math.random() * 6 + 's';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 8000);
-      }
-    }
+  typeLine();
+}
 
-    createConfettiHearts();
-    setInterval(createConfettiHearts, 6000);
-  </script>
+function autoExpandWrapper() {
+  const scrollH = document.querySelector('.card').scrollHeight;
+  cardWrapper.style.maxHeight = Math.min(window.innerHeight, scrollH + 30) + "px";
+}
+
+function createSparkle(container) {
+  const sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+  sparkle.style.left = Math.random() * 90 + "%";
+  sparkle.style.top = Math.random() * 30 + 60 + "%";
+  sparkle.style.background = ["#fff", "#ffd700", "#add8e6", "#f9c6f9"][Math.floor(Math.random() * 4)];
+  sparkle.style.width = sparkle.style.height = (6 + Math.random() * 6) + "px";
+  sparkle.style.animationDuration = (1.2 + Math.random()).toFixed(2) + "s";
+  container.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 2000);
+}
+
+function createConfettiHearts() {
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'confetti-heart';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.top = '-' + (Math.random() * 20) + 'vh';
+    heart.style.animationDelay = Math.random() * 6 + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+  }
+}
+
+createConfettiHearts();
+setInterval(createConfettiHearts, 6000);
+</script>
 </body>
 </html>
