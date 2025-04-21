@@ -25,7 +25,7 @@
       max-width: 390px;
       overflow: hidden;
       transition: max-height 0.6s ease;
-      max-height: 80vh;
+      max-height: 95vh;
       border-radius: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       z-index: 2;
@@ -110,16 +110,38 @@
       background: none;
       border: none;
       cursor: pointer;
-      transition: transform 0.3s ease, color 0.3s ease;
-      color: #ff6b6b;
       font-size: 1.5rem;
-      animation: pulse-heart 1.5s ease-in-out infinite;
       width: 24px;
+      position: relative;
+      animation: pulse-heart 1.5s ease-in-out infinite;
     }
-    #mysteryBtn:hover {
+
+    #mysteryBtn i {
+      transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    #mysteryBtn i.bi-heart {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    #mysteryBtn.filled i.bi-heart-fill {
+      color: #ff6b6b;
+      text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+      transform: scale(1.1);
+    }
+
+    #mysteryBtn:hover i.bi-heart {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+
+    #mysteryBtn.filled:hover i.bi-heart-fill {
       color: #ff8787;
       transform: scale(1.2);
     }
+
     @keyframes pulse-heart {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
@@ -328,7 +350,7 @@
       <div class="flex justify-center items-center space-x-2 mb-3">
         <div class="mr-10">
           <button id="mysteryBtn" onclick="revealSurprise()">
-            <i class="bi bi-heart-fill text-2xl"></i>
+            <i class="bi bi-heart text-2xl"></i>
           </button>
         </div>
         <button id="prevBtn" onclick="playPrevious()" class="hover:text-gray-300 transition-colors">
@@ -376,7 +398,7 @@
           <div class="mt-6 flex justify-center">
             <div class="bg-white p-2 rounded-lg shadow-lg text-center w-40">
               <img src="us/first.jpg" class="w-full h-40 object-cover rounded-sm border border-gray-300" alt="Mini Polaroid">
-              <div class="mt-1 text-xs text-gray-700 italic">Our first monthsary ✨</div>
+              <div class="mt-1 text-xs text-gray-700 italic">Our first monthsary✨</div>
             </div>
           </div>
 
@@ -590,10 +612,14 @@
 
     function revealSurprise() {
       const mysteryBtn = document.getElementById("mysteryBtn");
+      const heartIcon = mysteryBtn.querySelector("i");
       const msg = document.getElementById("hiddenMessage");
 
       if (isMessageVisible) {
         msg.style.opacity = "0";
+        heartIcon.classList.remove("bi-heart-fill");
+        heartIcon.classList.add("bi-heart");
+        mysteryBtn.classList.remove("filled");
         setTimeout(() => {
           msg.style.visibility = "hidden";
           document.body.classList.remove("scroll-enabled");
@@ -607,6 +633,9 @@
       } else {
         msg.style.visibility = "visible";
         msg.style.opacity = "1";
+        heartIcon.classList.remove("bi-heart");
+        heartIcon.classList.add("bi-heart-fill");
+        mysteryBtn.classList.add("filled");
         document.body.classList.add("scroll-enabled");
         document.documentElement.classList.add("scroll-enabled");
 
@@ -643,10 +672,10 @@
             'Happy 1st Monthsary, <span class="text-pink-300 font-bold">Babe</span>!',
             '',
             'Ang bilis lang—parang kahapon lang nung nag-match tayo sa Tinder, tapos ngayon, ikaw na ‘yung nagpapasaya sa’kin araw-araw.',
-            'Di ko pa rin makalimutan yung araw na sinagot mo ako sa Sawangan.',
-            'Ang hangin, yung dagat, OPM love songs, tapos ikaw pa ‘yung katabi ko… sarap sa feeling, <span class="text-pink-300 font-bold">Hon</span>.',
-            'Kaya kahit ilang beses ko sinabing “labelan na natin ‘to” in a playful way, deep inside seryoso ako nun.',
-            'And when you finally agreed—best feeling ever.',
+            'Di ko pa rin makalimutan yung araw na sinagot mo ako sa Sawangan Park.',
+            'Ang hangin, yung dagat, OPM love songs pa sa background, tapos ikaw pa ‘yung katabi ko… grabe sarap sa feeling, <span class="text-pink-300 font-bold">Hon</span>.',
+            'Kaya kahit ilang beses ko sinabing “labelan na” in a playful way, deep inside seryoso ako nun.',
+            'And when you finally agreed—best feeling ever. gagiii',
             'Hindi rin mawawala sa isip ko yung duet natin kahit alam kong pangit boses ko. Pero dahil ikaw ‘yung kasama ko, na-enjoy ko pa rin.',
             '<span class="text-pink-300 font-bold">Love</span>, ang ganda ng boses mo—wag kang mahiya.',
             'I’ll never get tired of hearing it… and of choosing you.',
