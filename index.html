@@ -328,13 +328,13 @@
     <div class="card z-10">
       <div id="songDetails">
         <div class="song-details-container">
-          <img id="songImage" src="us/photo1.jpg" alt="Us Together" class="w-full rounded-xl shadow-lg mb-4">
-          <div id="songTitle" class="text-xl font-semibold">Tibok</div>
-          <div id="artist" class="text-sm text-gray-300 mb-3">Earl Agustin</div>
+          <img id="songImage" src="us/photo4.jpg" alt="Us Together" class="w-full rounded-xl shadow-lg mb-4">
+          <div id="songTitle" class="text-xl font-semibold">Crazier</div>
+          <div id="artist" class="text-sm text-gray-300 mb-3">Arthur Miguel</div>
         </div>
       </div>
 
-      <audio id="bg-music" src="music/tibok.mp3"></audio>
+      <audio id="bg-music" src="music/crazier.mp3" muted></audio>
       <audio id="reveal-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_545f40c619.mp3"></audio>
       <audio id="sparkle-sound" src="https://cdn.pixabay.com/audio/2023/03/21/audio_2d8b3d536b.mp3"></audio>
 
@@ -369,7 +369,7 @@
       </div>
 
       <div class="flex justify-center mt-1">
-        <img id="spotifyCode" src="us/tibok.jpg" alt="Spotify Code" class="h-auto rounded-md">
+        <img id="spotifyCode" src="us/crazier.png" alt="Spotify Code" class="h-auto rounded-md">
       </div>
 
       <div id="hiddenMessage">
@@ -429,18 +429,11 @@
 
     const playlist = [
       {
-        title: "Tibok",
-        artist: "Earl Agustin",
-        src: "music/tibok.mp3",
-        image: "us/photo1.jpg",
-        spotifyCode: "us/tibok.png"
-      },
-      {
-        title: "Bawat Sandali",
-        artist: "Amiel Sol",
-        src: "music/sandali.mp3",
-        image: "us/photo2.jpg",
-        spotifyCode: "us/sandali.png"
+        title: "Crazier",
+        artist: "Arthur Miguel",
+        src: "music/crazier.mp3",
+        image: "us/photo4.jpg",
+        spotifyCode: "us/crazier.png"
       },
       {
         title: "I Like You So Much, You'll Know It",
@@ -450,25 +443,32 @@
         spotifyCode: "us/like.png"
       },
       {
+        title: "Bawat Sandali",
+        artist: "Amiel Sol",
+        src: "music/sandali.mp3",
+        image: "us/photo2.jpg",
+        spotifyCode: "us/sandali.png"
+      },
+      {
         title: "You'll Be In My Heart",
         artist: "NIKI",
         src: "music/myheart.mp3",
-        image: "us/photo5.jpg",
+        image: "us/her.jpg",
         spotifyCode: "us/heart.png"
       },
       {
-        title: "Spring Snow",
-        artist: "10cm",
-        src: "music/Spring.mp3",
-        image: "us/night.jpg",
-        spotifyCode: "us/spring.png"
+        title: "Pasilyo",
+        artist: "SunKissed Lola",
+        src: "music/pasilyo.mp3",
+        image: "us/photo5.jpg",
+        spotifyCode: "us/pasilyo.png"
       },
       {
-        title: "I Like Me Better",
-        artist: "Lauv",
-        src: "music/better.mp3",
-        image: "us/photo4.jpg",
-        spotifyCode: "us/better.png"
+        title: "Tibok",
+        artist: "Earl Agustin",
+        src: "music/tibok.mp3",
+        image: "us/photo1.jpg",
+        spotifyCode: "us/tibok.png"
       }
     ];
 
@@ -476,6 +476,7 @@
     let isPlaying = false;
     let isShuffling = false;
     let isMessageVisible = false;
+    let shuffleQueue = [];
 
     function loadSong(index) {
       const song = playlist[index];
@@ -501,6 +502,14 @@
         playIcon.classList.remove("hidden");
         pauseIcon.classList.add("hidden");
       }
+      // Update shuffle queue when a song is loaded
+      if (isShuffling && !shuffleQueue.includes(index)) {
+        shuffleQueue = shuffleQueue.filter(i => i !== currentSongIndex);
+        if (!shuffleQueue.length) {
+          resetShuffleQueue();
+        }
+        currentSongIndex = index;
+      }
     }
 
     function togglePlay() {
@@ -519,22 +528,32 @@
       }
     }
 
+    function resetShuffleQueue() {
+      shuffleQueue = Array.from({ length: playlist.length }, (_, i) => i);
+      // Remove the current song to avoid immediate replay
+      shuffleQueue = shuffleQueue.filter(i => i !== currentSongIndex);
+    }
+
     function toggleShuffle() {
       isShuffling = !isShuffling;
       const shuffleBtn = document.getElementById("shuffleBtn");
       if (isShuffling) {
+        resetShuffleQueue();
         shuffleBtn.classList.add("active");
       } else {
+        shuffleQueue = [];
         shuffleBtn.classList.remove("active");
       }
     }
 
     function getRandomSongIndex(currentIndex) {
-      let newIndex;
-      do {
-        newIndex = Math.floor(Math.random() * playlist.length);
-      } while (newIndex === currentIndex);
-      return newIndex;
+      if (!shuffleQueue.length) {
+        resetShuffleQueue();
+      }
+      const randomIndex = Math.floor(Math.random() * shuffleQueue.length);
+      const selectedIndex = shuffleQueue[randomIndex];
+      shuffleQueue.splice(randomIndex, 1); // Remove the selected song from the queue
+      return selectedIndex;
     }
 
     function createSongDetailsClone(index, direction) {
@@ -773,6 +792,19 @@
     }
 
     loadSong(currentSongIndex);
+    audio.muted = true; // Start muted to increase autoplay compatibility
+    togglePlay(); // Attempt to auto-play
+    setTimeout(() => { if (!audio.paused) audio.muted = false; }, 1000); // Unmute after 1 second if playing
+    // Fallback: Trigger playback on first user interaction
+    const tryPlayOnInteraction = () => {
+      if (audio.paused) {
+        audio.muted = true; // Try muted first
+        togglePlay();
+        setTimeout(() => { if (!audio.paused) audio.muted = false; }, 1000);
+      }
+      document.removeEventListener('click', tryPlayOnInteraction); // Remove after first interaction
+    };
+    document.addEventListener('click', tryPlayOnInteraction);
     createConfettiHearts();
     setInterval(createConfettiHearts, 6000);
     setInterval(createFloatingParticles, 7000);
